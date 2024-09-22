@@ -69,23 +69,33 @@ public class Menu {
 
     // Method to reserve a car by assigning a new customer ID and taking customer details
     private void reserveCar() {
-        // Dynamically generate a customer ID based on the current number of customers
-        int customerCount = carService.getNumberOfCustomers();
-        String customerId = "CUST" + (customerCount + 1);
-        System.out.println("Assigned Customer ID: " + customerId);
-
-        // Input customer name
+        // Step 1: Input customer name
         System.out.print("Enter Customer Name: ");
         String customerName = scanner.nextLine();
+
+        // Dynamically generate a customer ID based on the current number of customers
+        int customerCount = carService.getNumberOfCustomers();
+        String customerId = "CUST" + String.format("%02d", customerCount + 1);
+        System.out.println("Assigned Customer ID: " + customerId);
 
         // Create a new customer object with the generated ID and entered name
         Customer customer = new Customer(customerId, customerName);
 
-        // Input the car ID to reserve
+        // Add the new customer to the customer list
+        carService.addCustomer(customer);
+
+        // Step 2: Input car type (optional)
+        System.out.print("Enter car type (SEDAN, SUV, VAN, or press Enter to skip): ");
+        String carType = scanner.nextLine();
+
+        // Step 3: Show available cars for the input date range and car type (if provided)
+        carService.showAvailableCars(null, carType.isEmpty() ? null : carType, startDate, endDate);
+
+        // Step 4: Input the car ID to reserve
         System.out.print("Enter the car ID you want to reserve: ");
         String carId = scanner.nextLine();
 
-        // Call CarService to rent the car for the customer for the selected date range
+        // Step 5: Call CarService to rent the car for the customer for the selected date range
         carService.rentCar(carId, customer, startDate, endDate);
     }
 

@@ -9,9 +9,17 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        CarService carService = new CarService();
+        // Generate a CarService instance pre-populated with sample cars and reservations
+        CarService carService = generateCarService();
 
+        // Create a Menu instance with the carService and display the menu
+        Menu menu = new Menu(carService);
+        menu.showMenu();
+    }
+
+    public static CarService generateCarService() {
         // Add cars to the inventory
+        CarService carService = new CarService();
         carService.addCar(new Car("CAR001", "Mazda 3", Car.CarType.SEDAN, 55.00)); // Booked by customer1
         carService.addCar(new Car("CAR002", "Tesla S", Car.CarType.SEDAN, 58.00)); // Booked by customer2
         carService.addCar(new Car("CAR003", "Honda CRV", Car.CarType.SEDAN, 59.00));
@@ -37,12 +45,13 @@ public class Main {
         Customer customer1 = new Customer("1", "John");
         Customer customer2 = new Customer("2", "Kate");
 
+        carService.addCustomer(customer1);
+        carService.addCustomer(customer2);
+
         // Add some reservations
         carService.rentCar("CAR001", customer1, LocalDate.of(2024, 10, 15), LocalDate.of(2024, 10, 19));
         carService.rentCar("CAR002", customer2, LocalDate.of(2024, 10, 11), LocalDate.of(2024, 10, 17));
 
-        Menu menu = new Menu(carService);
-        menu.showMenu();
-
+        return carService;
     }
 }
